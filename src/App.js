@@ -8,6 +8,7 @@ function App() {
 		<div className="App">
 			<header>
 				<h1>Piggy Bank Calculator</h1>
+				<p>Visit <a href="https://theanimal.farm/piggybank/0x2BB3CA261Bfdd2dcd82C512Fb3Cc78F72281E0A7">the Animal Farm</a> to earn up to 3% ROI.</p>
 			</header>
 			<Calculator />
 		</div>
@@ -21,9 +22,9 @@ class Calculator extends React.Component {
 		this.state = {
 			table: [],
 			balance: 10,
-			startDate: "04/03/2022",
-			weeks: 5,
-			bonusPercent: 25
+			startDate: moment(),
+			weeks: 4,
+			bonusPercent: 20
 		};
 	}
 
