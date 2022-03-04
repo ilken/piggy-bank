@@ -24,7 +24,7 @@ class Calculator extends React.Component {
 			balance: 10,
 			startDate: moment(),
 			weeks: 4,
-			bonusPercent: 20
+			bonusPercent: 10
 		};
 	}
 
