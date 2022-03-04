@@ -200,7 +200,7 @@ class Calculator extends React.Component {
 		bonusPercent = this.state.bonusPercent / 100;
 
 		const lockupDays = weeks * 7;
-		const endDate = moment(startDate).add(lockupDays, 'days');
+		// const endDate = moment(startDate).add(lockupDays, 'days');
 		const daysToEnableHigherBonus = parseInt(lockupDays * 0.75);
 		const dailyRate = 1.03;
 		const totalBonus = balance * bonusPercent;
