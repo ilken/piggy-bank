@@ -222,7 +222,7 @@ class Calculator extends React.Component {
 		for(let day=0; day < lockupDays; day++) {
 			const higherBonusEnabled = day >= daysToEnableHigherBonus;
 			const dailyBonus = higherBonusEnabled ? highDailyBonus : lowDailyBonus;
-			balance = (balance + dailyBonus) * dailyRate;
+			balance = (Number(balance) + Number(dailyBonus)) * dailyRate;
 			totalDailyBonus += dailyBonus;
 			console.log(`Day ${day+1} | HighBonus: ${higherBonusEnabled} | Bonus: ${dailyBonus.toFixed(3)} | Balance: ${balance.toFixed(3)}`);
 			table.push({
@@ -239,15 +239,17 @@ class Calculator extends React.Component {
 	}
 
 	onBalanceChange = (e) => {
-		const balance = e.target.value;
+		let balance = e.target.value;
 		if(isNaN(balance)) return;
 
 		this.setState({balance})
 	}
 
 	onWeeksChange = (e) => {
-		const weeks = e.target.value;
+		let weeks = e.target.value;
 		if(isNaN(weeks)) return;
+		if(weeks > 156) weeks = 156;
+		if(weeks < 1) weeks = 1;
 		const bonusPercent = this.getBonus(weeks);
 		this.setState({weeks, bonusPercent});
 	}
