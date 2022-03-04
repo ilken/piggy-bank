@@ -8,7 +8,7 @@ function App() {
 		<div className="App">
 			<header>
 				<h1>Piggy Bank Calculator</h1>
-				<p>Visit <a href="https://theanimal.farm/piggybank/0x2BB3CA261Bfdd2dcd82C512Fb3Cc78F72281E0A7">the Animal Farm</a> to earn up to 3% ROI.</p>
+				<p>Visit <a href="https://theanimal.farm/piggybank/0x2BB3CA261Bfdd2dcd82C512Fb3Cc78F72281E0A7" target="_blank">the Animal Farm</a> to earn up to 3% ROI.</p>
 			</header>
 			<Calculator />
 		</div>
@@ -200,6 +200,8 @@ class Calculator extends React.Component {
 		startDate = moment(this.state.startDate, "DD/MM/YYYY");
 		bonusPercent = this.state.bonusPercent / 100;
 
+		if(!balance) balance = 1;
+		if(!weeks) weeks = 1;
 		const lockupDays = weeks * 7;
 		// const endDate = moment(startDate).add(lockupDays, 'days');
 		const daysToEnableHigherBonus = parseInt(lockupDays * 0.75);
@@ -250,7 +252,6 @@ class Calculator extends React.Component {
 		let weeks = e.target.value;
 		if(isNaN(weeks)) return;
 		if(weeks > 156) weeks = 156;
-		if(weeks < 1) weeks = 1;
 		const bonusPercent = this.getBonus(weeks);
 		this.setState({weeks, bonusPercent});
 	}
