@@ -2,7 +2,7 @@
   "name": "piggy-bank",
   "version": "0.1.0",
   "private": false,
-  "homepage": "http://ilken.github.io/piggy-bank",
+  "homepage": "https://ilken.github.io/piggy-bank",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.3",
