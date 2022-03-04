@@ -275,7 +275,7 @@ class Calculator extends React.Component {
 								<input type="date" className='calculator__settings__item__input' value={moment(startDate).format("YYYY-MM-DD")} onChange={this.onDateChange}/>
 							</div>
 							<div className='calculator__settings__item'>
-								<label className='calculator__settings__item__label'>Pigglets:</label>
+								<label className='calculator__settings__item__label'>Piglets:</label>
 								<input type="number" className='calculator__settings__item__input --balance' value={balance} onChange={this.onBalanceChange}/>
 							</div>
 							<div className='calculator__settings__item'>
@@ -301,7 +301,7 @@ class Calculator extends React.Component {
 									<th>Date</th>
 									<th>Daily Bonus</th>
 									<th>Total Bonus Paid</th>
-									<th>Pigglet Balance</th>
+									<th>Piglet Balance</th>
 								</tr>
 							</thead>
 							<tbody>
