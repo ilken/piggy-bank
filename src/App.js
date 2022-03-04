@@ -195,9 +195,8 @@ class Calculator extends React.Component {
 		return data[weeks] || 0;
 	}
 
-	timeWeightedBonus = () => {
-		//ploty=Power[0.335x,2] where y is between 0 and 70 and x is between 0 and 25
-		//ploty=Power[0.072x,2] where y is between 0 and 30 and x is between 0 and 75
+	timeWeightedBonus = (day) => {
+		return Math.pow(day, 4.1);
 	}
 
 	calculate = () => {
@@ -214,31 +213,35 @@ class Calculator extends React.Component {
 		const totalBonus = balance * bonusPercent;
 		const lowDailyBonusDays = parseInt(lockupDays * 0.75);
 		const highDailyBonusDays = lockupDays - lowDailyBonusDays;
-		const lowDailyBonus = (totalBonus * 0.3) / lowDailyBonusDays;
-		const highDailyBonus = (totalBonus * 0.7) / highDailyBonusDays;
+		// const lowDailyBonus = (totalBonus * 0.3) / lowDailyBonusDays;
+		// const highDailyBonus = (totalBonus * 0.7) / highDailyBonusDays;
+		const totalTimeWeightedBonus = this.timeWeightedBonus(lockupDays);
 		
-		let totalDailyBonus = 0;
+		let bonusPaid = 0;
 		let table = [{
 			day: 0,
 			date: moment(startDate),
 			higherBonusEnabled: false,
 			dailyBonus: 0,
-			totalDailyBonus: 0,
+			bonusPaid: 0,
 			balance
 		}];
 
 		for(let day=0; day < lockupDays; day++) {
 			const higherBonusEnabled = day >= daysToEnableHigherBonus;
-			const dailyBonus = higherBonusEnabled ? highDailyBonus : lowDailyBonus;
+			// const dailyBonus = higherBonusEnabled ? highDailyBonus : lowDailyBonus;
+			const dailyTimeWeightedBonusPercent = this.timeWeightedBonus(day+1) / totalTimeWeightedBonus;
+			const dailyBonus = (totalBonus * dailyTimeWeightedBonusPercent) - bonusPaid; 
+
 			balance = (Number(balance) + Number(dailyBonus)) * dailyRate;
-			totalDailyBonus += dailyBonus;
-			console.log(`Day ${day+1} | HighBonus: ${higherBonusEnabled} | Bonus: ${dailyBonus.toFixed(3)} | Balance: ${balance.toFixed(3)}`);
+			bonusPaid += dailyBonus;
+			// console.log(`Day ${day+1} | Time Bonus: ${dailyTimeWeightedBonusPercent} | Bonus: ${dailyBonus.toFixed(3)} | Balance: ${balance.toFixed(3)}`);
 			table.push({
 				day: day + 1,
 				date: moment(startDate).add(day + 1, 'days'),
 				higherBonusEnabled,
 				dailyBonus,
-				totalDailyBonus,
+				bonusPaid,
 				balance
 			})
 		}
@@ -315,7 +318,7 @@ class Calculator extends React.Component {
 										<td>{item.day}</td>
 										<td>{moment(item.date).format("DD MMM YYYY")}</td>
 										<td>{Number(item.dailyBonus).toFixed(3)}</td>
-										<td>{Number(item.totalDailyBonus).toFixed(3)}</td>
+										<td>{Number(item.bonusPaid).toFixed(3)}</td>
 										<td>{Number(item.balance).toFixed(2)}</td>
 									</tr>
 								})}
