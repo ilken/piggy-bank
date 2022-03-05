@@ -206,15 +206,15 @@ class Calculator extends React.Component {
 
 		if(!balance) balance = 1;
 		if(!weeks) weeks = 1;
+		const trufflePerPiglet = 89799;
+		const truffleValue = 0.000028;
 		const lockupDays = weeks * 7;
 		// const endDate = moment(startDate).add(lockupDays, 'days');
 		const daysToEnableHigherBonus = parseInt(lockupDays * 0.75);
 		const dailyRate = 1.03;
 		const totalBonus = balance * bonusPercent;
-		const lowDailyBonusDays = parseInt(lockupDays * 0.75);
-		const highDailyBonusDays = lockupDays - lowDailyBonusDays;
-		// const lowDailyBonus = (totalBonus * 0.3) / lowDailyBonusDays;
-		// const highDailyBonus = (totalBonus * 0.7) / highDailyBonusDays;
+		// const lowDailyBonusDays = parseInt(lockupDays * 0.75);
+		// const highDailyBonusDays = lockupDays - lowDailyBonusDays;
 		const totalTimeWeightedBonus = this.timeWeightedBonus(lockupDays);
 		
 		let bonusPaid = 0;
@@ -224,12 +224,13 @@ class Calculator extends React.Component {
 			higherBonusEnabled: false,
 			dailyBonus: 0,
 			bonusPaid: 0,
-			balance
+			balance,
+			dailyTruffles: (balance * trufflePerPiglet),
+			dailyTrufflesValue: (balance * trufflePerPiglet * truffleValue)
 		}];
 
 		for(let day=0; day < lockupDays; day++) {
 			const higherBonusEnabled = day >= daysToEnableHigherBonus;
-			// const dailyBonus = higherBonusEnabled ? highDailyBonus : lowDailyBonus;
 			const dailyTimeWeightedBonusPercent = this.timeWeightedBonus(day+1) / totalTimeWeightedBonus;
 			const dailyBonus = (totalBonus * dailyTimeWeightedBonusPercent) - bonusPaid; 
 
@@ -242,7 +243,9 @@ class Calculator extends React.Component {
 				higherBonusEnabled,
 				dailyBonus,
 				bonusPaid,
-				balance
+				balance,
+				dailyTruffles: (balance * trufflePerPiglet),
+				dailyTrufflesValue: (balance * trufflePerPiglet * truffleValue)
 			})
 		}
 
@@ -310,6 +313,7 @@ class Calculator extends React.Component {
 									<th>Daily Bonus</th>
 									<th>Total Bonus Paid</th>
 									<th>Piglet Balance</th>
+									<th>Daily Truffles</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -320,6 +324,11 @@ class Calculator extends React.Component {
 										<td>{Number(item.dailyBonus).toFixed(3)}</td>
 										<td>{Number(item.bonusPaid).toFixed(3)}</td>
 										<td>{Number(item.balance).toFixed(2)}</td>
+										<td>
+											{Number(item.dailyTruffles).toFixed(0)}
+											<br/>
+											<strong>≈ ${Number(item.dailyTrufflesValue).toFixed(2)}</strong>
+										</td>
 									</tr>
 								})}
 							</tbody>
