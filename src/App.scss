@@ -188,17 +188,6 @@ table {
 	caption-side: bottom;
 	border-collapse: collapse;
 
-	@media only screen and (max-device-width: 1024px) {
-		tr th:first-child,
-		tr td:first-child {
-			display: none;
-		}
-		tr th:nth-child(2),
-		tr td:nth-child(2) {
-			display: none;
-		}
-	}
-
 	thead, tbody, tfoot, tr, td, th {
 		border-color: inherit;
 		border-style: solid;
@@ -217,6 +206,11 @@ table {
 		background-color: transparent;
 		border-bottom-width: 1px;
 		box-shadow: inset 0 0 0 9999px transparent;
+		vertical-align: middle;
+
+		@media only screen and (max-device-width: 1024px) {
+			padding: 0.625rem 1rem;
+		}
 	}
 
 	th {
