@@ -210,7 +210,7 @@ class Calculator extends React.Component {
 
 		if(!balance) balance = 1;
 		if(!weeks) weeks = 1;
-		const trufflePerPiglet = 89799;
+		const trufflePerPiglet = 86400;
 		const truffleValue = 0.000028;
 		const lockupDays = weeks * 7;
 		// const endDate = moment(startDate).add(lockupDays, 'days');
