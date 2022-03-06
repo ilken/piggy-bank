@@ -6,11 +6,15 @@ import './App.scss';
 function App() {
 	return (
 		<div className="App">
+			<section className="site-banner">
+				We build FREE tools for the best crypto community in the world! - <a href="https://theanimal.farm/piggybank/0x2BB3CA261Bfdd2dcd82C512Fb3Cc78F72281E0A7" target="_blank">Join our Piggy Bank team</a>
+			</section>
 			<header>
 				<h1>Piggy Bank Calculator</h1>
 				<p>Visit <a href="https://theanimal.farm/piggybank/0x2BB3CA261Bfdd2dcd82C512Fb3Cc78F72281E0A7" target="_blank">the Animal Farm</a> to earn up to 3% ROI.</p>
 			</header>
 			<Calculator />
+			<DonationBox />
 		</div>
 	);
 }
@@ -277,7 +281,6 @@ class Calculator extends React.Component {
 
 		return (
 			<section className='calculator'>
-
 				<div className="card --calculator-settings">
 					<div className="card__body">
 						<div className='calculator__settings'>
@@ -337,6 +340,35 @@ class Calculator extends React.Component {
 				</div>
 			</section>
 		);
+	}
+}
+
+class DonationBox extends React.Component {
+	render() {
+		return <section className='donation'>
+			<div className='card --donation'>
+				<div className='card__body'>
+					<div className='donation__content'>
+						<div className='donation__title'>
+							Would you like to contribute to our Piggy Bank?
+						</div>
+						<div className='donation__description'>
+							We'll turn your support into coffee ☕ and code.
+						</div>
+						<div className='donation__wallet__label'>
+							Donate $5 BUSD or more :) to:
+						</div>
+						<div className='donation__wallet'>
+							0x2BB3CA261Bfdd2dcd82C512Fb3Cc78F72281E0A7
+						</div>
+						<div className='donation__wallet__footer'>
+							5 BUSD ~ .015 BNB ~ .055 DRIP
+						</div>
+					</div>
+					<div className='donation__img'/>
+				</div>
+			</div>
+		</section>
 	}
 }
 

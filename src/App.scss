@@ -1,3 +1,7 @@
+body {
+	font-family: 'Fredoka', serif;
+}
+
 .App {
 	background-color: #f5f5f9;
 	background-image: url("/img/bg.jpg");
@@ -7,6 +11,19 @@
 	background-color: rgb(157, 150, 60);
 	height: 100%;
 
+	.site-banner {
+		padding: 20px;
+		background-color: rgb(39, 38, 44);
+    	border-bottom: 2px solid rgba(133, 133, 133, 0.1);
+		text-align: center;
+		color: #fff;
+		font-weight: 600;
+
+		a {
+			color: rgb(255 217 2);
+			text-decoration: underline;
+		}
+	}
 	header {
 		h1 {
 			font-size: 48px;
@@ -166,6 +183,65 @@
 	}
 }
 
+.donation {
+	.card__body {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+
+		@media only screen and (max-device-width: 1024px) {
+			flex-direction: column;
+		}
+	}
+	&__content {
+		padding-right: 20px;
+		
+		@media only screen and (max-device-width: 1024px) {
+			padding-right: 0;
+			padding-bottom: 20px;
+		}
+	}
+	&__title {
+		font-size: 24px;
+		font-weight: 600;
+		margin-bottom: 20px;
+	}
+	&__description {
+		padding-right: 20px;
+		font-size: 18px;
+		margin-bottom: 15px;
+	}
+	&__wallet {
+		border-radius: 4px;
+		border: 1px solid #DDD;
+		padding: 10px 20px;
+		background: #ffd902;
+		width: fit-content;
+		margin-bottom: 10px;
+		
+		@media only screen and (max-device-width: 1024px) {
+			font-size: 10px;
+		}
+
+		&__label {
+			font-weight: 600;
+			margin-bottom: 5px;
+		}
+		&__footer {
+			font-size: 14px;
+			color: #666;
+		}
+	}
+	&__img {
+		background-image: url("/img/donation.png");
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
+		width: 200px;
+		height: 200px;
+	}
+}
+
 header {
 	padding-top: 40px;
 }
@@ -210,6 +286,10 @@ table {
 
 		@media only screen and (max-device-width: 1024px) {
 			padding: 0.625rem 1rem;
+
+			strong {
+				white-space: nowrap;
+			}
 		}
 	}
 
