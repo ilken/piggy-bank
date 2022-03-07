@@ -69,6 +69,7 @@ body {
 	background-clip: border-box;
 	border: 0 solid #d9dee3;
 	border-radius: 0.5rem;
+	overflow: hidden;
 
 	&__body {
 		flex: 1 1 auto;
@@ -94,6 +95,7 @@ body {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		margin-bottom: 10px;
 
 		@media only screen and (max-device-width: 1024px) {
 			align-items: flex-start;
@@ -126,16 +128,24 @@ body {
 				border-radius: 0.375rem;
 				transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 
-				@media only screen and (max-device-width: 1024px) {
-					margin-bottom: 10px;
-				}
-
 				&.--balance {
 					width: 150px;
 				}
 
 				&.--weeks {
 					width: 100px;
+				}
+
+				@media only screen and (max-device-width: 1024px) {
+					margin-bottom: 10px;
+
+					&.--balance {
+						width: 170px;
+					}
+	
+					&.--weeks {
+						width: 170px;
+					}
 				}
 			}
 			&__value {
@@ -175,11 +185,63 @@ body {
 					border-color: #202f3f;
 					transform: translateY(-1px);
 				}
+
+				@media only screen and (max-device-width: 1024px) {
+					font-size: 18px;
+					width: 100px;
+					margin-top: 10px;
+				}
+			}
+		}
+	}
+	&__colours {
+		display: flex;
+		flex-direction: row;
+
+		@media only screen and (max-device-width: 1024px) {
+			flex-direction: column;
+		}
+
+		&__item {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			margin-right: 20px;
+
+			@media only screen and (max-device-width: 1024px) {
+				margin-bottom: 10px;
+			}
+
+			&__value {
+				width: 20px;
+				height: 20px;
+				border-radius: 4px;
+				margin-right: 10px;
+				border: 1px solid #d9dee3;
+
+				&.--active {
+					background-color: #effbe9;
+				}
+				&.--pending {
+					background-color: #ffe9e7;
+				}
+			}
+			&__text {
+				color: #666;
 			}
 		}
 	}
 	&__table {
 		width: 100%;
+
+		td {
+			&.--active {
+				background-color: #effbe9;
+			}
+			&.--pending {
+				background-color: #ffe9e7;
+			}
+		}
 	}
 }
 

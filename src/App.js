@@ -210,11 +210,12 @@ class Calculator extends React.Component {
 
 		if(!balance) balance = 1;
 		if(!weeks) weeks = 1;
+		const trufflePerPiglet = 2592000;
 		const originalTruffleValue = 0.000028;
-		const truffleDecay = 0.985;
+		const truffleDecay = 0.99;
 		const daysSinceLaunch = moment().diff(moment("04/03/2022", "DD/MM/YYYY"), 'days');
-		const truffleValue = originalTruffleValue * Math.pow(truffleDecay, daysSinceLaunch);
-		const trufflePerPiglet = 86400;
+		// const truffleValue = originalTruffleValue * Math.pow(truffleDecay, daysSinceLaunch);
+		const truffleProductionRate = 86400;
 		const lockupDays = weeks * 7;
 		// const endDate = moment(startDate).add(lockupDays, 'days');
 		const daysToEnableHigherBonus = parseInt(lockupDays * 0.75);
@@ -225,37 +226,39 @@ class Calculator extends React.Component {
 		const totalTimeWeightedBonus = this.timeWeightedBonus(lockupDays);
 		
 		let bonusPaid = 0;
-		let table = [{
-			day: 0,
-			date: moment(startDate),
-			higherBonusEnabled: false,
-			dailyBonus: 0,
-			bonusPaid: 0,
-			balance,
-			dailyTruffles: (balance * trufflePerPiglet),
-			dailyTrufflesValue: (balance * trufflePerPiglet * truffleValue)
-		}];
+		let pendingTruffles = 0;
+		let table = [];
 
 		for(let day=0; day < lockupDays; day++) {
 			const higherBonusEnabled = day >= daysToEnableHigherBonus;
 			const dailyTimeWeightedBonusPercent = this.timeWeightedBonus(day+1) / totalTimeWeightedBonus;
 			const dailyBonus = (totalBonus * dailyTimeWeightedBonusPercent) - bonusPaid;
 			const decayDays = daysSinceLaunch + day;
-			const newTruffleValue = originalTruffleValue * Math.pow(truffleDecay, decayDays);
+			const truffleValue = originalTruffleValue * Math.pow(truffleDecay, decayDays);
+			const dailyTruffles = (Number(balance) * truffleProductionRate);
+			const canCompound = (Number(dailyTruffles) + Number(pendingTruffles)) >= trufflePerPiglet;
 
-			balance = (Number(balance) + Number(dailyBonus)) * dailyRate;
-			bonusPaid += dailyBonus;
-			console.log(`Day ${day+1} | Time Bonus: ${dailyTimeWeightedBonusPercent.toFixed(4)} | Truffle: ${newTruffleValue.toFixed(6)} | Bonus: ${dailyBonus.toFixed(3)} | Balance: ${balance.toFixed(3)}`);
+			if(canCompound) {
+				let pendingBalance = pendingTruffles ? Number(pendingTruffles / trufflePerPiglet) : 0;
+				balance = (Number(balance) + Number(pendingBalance) + Number(dailyBonus)) * dailyRate;
+				bonusPaid += dailyBonus;
+			}
+
+			// console.log(`Day ${day+1} | Time Bonus: ${dailyTimeWeightedBonusPercent.toFixed(4)} | Truffle: ${truffleValue.toFixed(6)} | Bonus: ${dailyBonus.toFixed(3)} | Pending Truffles: ${pendingTruffles.toFixed(3)} | Balance: ${Number(balance).toFixed(3)}`);
 			table.push({
 				day: day + 1,
 				date: moment(startDate).add(day + 1, 'days'),
+				canCompound,
 				higherBonusEnabled,
 				dailyBonus,
 				bonusPaid,
 				balance,
-				dailyTruffles: (balance * trufflePerPiglet),
-				dailyTrufflesValue: (balance * trufflePerPiglet * newTruffleValue)
-			})
+				dailyTruffles: Number(dailyTruffles) + Number(pendingTruffles),
+				dailyTrufflesValue: (Number(dailyTruffles) + Number(pendingTruffles)) * truffleValue
+			});
+
+			if(canCompound) pendingTruffles = 0
+			else pendingTruffles += dailyTruffles
 		}
 
 		this.setState({table});
@@ -309,6 +312,16 @@ class Calculator extends React.Component {
 								<button className='calculator__settings__item__button' onClick={this.calculate}>Go</button>
 							</div>
 						</div>
+						<div className='calculator__colours'>
+							<div className='calculator__colours__item'>
+								<div className='calculator__colours__item__value --active'/>
+								<div className='calculator__colours__item__text'>Can compound</div>
+							</div>
+							<div className='calculator__colours__item'>
+								<div className='calculator__colours__item__value --pending'/>
+								<div className='calculator__colours__item__text'>Below compound threshold (accumulating)</div>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div className="card --calculator-table">
@@ -321,7 +334,7 @@ class Calculator extends React.Component {
 									<th>Daily Bonus</th>
 									<th>Total Bonus Paid</th>
 									<th>Piglet Balance</th>
-									<th>Daily Truffles</th>
+									<th>Daily Truffles Available</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -332,7 +345,7 @@ class Calculator extends React.Component {
 										<td>{Number(item.dailyBonus).toFixed(3)}</td>
 										<td>{Number(item.bonusPaid).toFixed(3)}</td>
 										<td>{Number(item.balance).toFixed(2)}</td>
-										<td>
+										<td className={`${item.canCompound ? "--active" : "--pending"}`}>
 											{Number(item.dailyTruffles).toFixed(0)}
 											<br/>
 											<strong>≈ ${Number(item.dailyTrufflesValue).toFixed(2)}</strong>
