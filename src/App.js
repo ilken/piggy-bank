@@ -210,8 +210,11 @@ class Calculator extends React.Component {
 
 		if(!balance) balance = 1;
 		if(!weeks) weeks = 1;
+		const originalTruffleValue = 0.000028;
+		const truffleDecay = 0.985;
+		const daysSinceLaunch = moment().diff(moment("04/03/2022", "DD/MM/YYYY"), 'days');
+		const truffleValue = originalTruffleValue * Math.pow(truffleDecay, daysSinceLaunch);
 		const trufflePerPiglet = 86400;
-		const truffleValue = 0.000028;
 		const lockupDays = weeks * 7;
 		// const endDate = moment(startDate).add(lockupDays, 'days');
 		const daysToEnableHigherBonus = parseInt(lockupDays * 0.75);
@@ -236,11 +239,13 @@ class Calculator extends React.Component {
 		for(let day=0; day < lockupDays; day++) {
 			const higherBonusEnabled = day >= daysToEnableHigherBonus;
 			const dailyTimeWeightedBonusPercent = this.timeWeightedBonus(day+1) / totalTimeWeightedBonus;
-			const dailyBonus = (totalBonus * dailyTimeWeightedBonusPercent) - bonusPaid; 
+			const dailyBonus = (totalBonus * dailyTimeWeightedBonusPercent) - bonusPaid;
+			const decayDays = daysSinceLaunch + day;
+			const newTruffleValue = originalTruffleValue * Math.pow(truffleDecay, decayDays);
 
 			balance = (Number(balance) + Number(dailyBonus)) * dailyRate;
 			bonusPaid += dailyBonus;
-			// console.log(`Day ${day+1} | Time Bonus: ${dailyTimeWeightedBonusPercent} | Bonus: ${dailyBonus.toFixed(3)} | Balance: ${balance.toFixed(3)}`);
+			console.log(`Day ${day+1} | Time Bonus: ${dailyTimeWeightedBonusPercent.toFixed(4)} | Truffle: ${newTruffleValue.toFixed(6)} | Bonus: ${dailyBonus.toFixed(3)} | Balance: ${balance.toFixed(3)}`);
 			table.push({
 				day: day + 1,
 				date: moment(startDate).add(day + 1, 'days'),
@@ -249,7 +254,7 @@ class Calculator extends React.Component {
 				bonusPaid,
 				balance,
 				dailyTruffles: (balance * trufflePerPiglet),
-				dailyTrufflesValue: (balance * trufflePerPiglet * truffleValue)
+				dailyTrufflesValue: (balance * trufflePerPiglet * newTruffleValue)
 			})
 		}
 
