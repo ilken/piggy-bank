@@ -45,14 +45,12 @@ class Tokens extends React.Component {
 
 			BNB.data.data.symbol = 'BNB';
 
-			setTimeout(() => {
-				this.setState({tokens: [
-					DRIP.data.data,
-					PIGS.data.data,
-					DOGS.data.data,
-					BNB.data.data
-				]});
-			}, 1000)
+			this.setState({tokens: [
+				DRIP.data.data,
+				PIGS.data.data,
+				DOGS.data.data,
+				BNB.data.data
+			]});
 		} catch(err) {
 			console.error(err);
 		}
