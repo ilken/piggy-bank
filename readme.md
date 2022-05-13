@@ -1,6 +1,6 @@
 # Piggy Bank Calculator
 
-This project is developed for the [Animal Farm](https://theanimal.farm/piggybank) project.
+This project is developed for the [Animal Farm](https://animalfarm.app/piggy-bank) project.
 
 ## Demo Site
 
